@@ -1,12 +1,18 @@
-// node class to represent the nodes in the search tree
-    public class Node {
-        Integer[] partition;//represents VR
-        int depth;
-        int diff;
+public class Node {
+    private int[] state;
+    private int cost;
 
-        public Node(Integer[] partition, int depth, int diff) {
-            this.partition = partition;
-            this.depth = depth;
-            this.diff = diff;
-        }
+    public Node(int[] state, int cost) {
+        this.state = state;
+        this.cost = cost;
     }
+
+    public int[] getState() {
+        return state;
+    }
+
+    public int getCost() {
+        return cost;
+    }
+
+}

@@ -4,17 +4,14 @@ public class BFS {
 	
 	private static int totalNodes; // to keep track of the total number of nodes
 	private static int visitedNodes; // to keep track of the number of visited nodes
-	private static List<Integer> totalNodesSolution = new ArrayList<>(); // to keep track of the number of nodes generated for each solution
-	private static List<Integer> visitedNodesSolution = new ArrayList<>(); // to keep track of the number of visited nodes for each solution
-
+	
 	// This method solves the n-queens problem using BFS and returns a list of solutions
-	public static List<int[]> solveNQueens(int n) {
-	    List<int[]> solutions = new ArrayList<>(); // initialize a list to hold the solutions
+	public static int[] solveNQueensBFS(int n) {
 	    Queue<Node> queue = new LinkedList<>(); // initialize a queue to hold the nodes to be explored
-	    Set<String> visited = new HashSet<>(); // initialize a set to keep track of visited states
+	    Set<int[]> visited = new HashSet<>(); // initialize a set to keep track of visited states
 	    
-	    queue.offer(new Node(new int[0], 0, null)); // add the initial empty state to the queue
-	    visited.add(Arrays.toString(new int[0])); // mark the initial state as visited
+	    queue.offer(new Node(new int[0], 0)); // add the initial empty state to the queue
+	    visited.add(new int[0]); // mark the initial state as visited
 	    totalNodes++; // increment the total nodes counter
 	    
 	    while (!queue.isEmpty()) { // loop until the queue is empty
@@ -23,37 +20,44 @@ public class BFS {
 	        visitedNodes++; // increment the visited nodes counter
 	        
 	        if (state.length == n) { // if the state is a complete solution
-	            solutions.add(state); // add it to the list of solutions
-	            totalNodesSolution.add(totalNodes); // add the total number of nodes generated for this solution to the list
-                visitedNodesSolution.add(visitedNodes); // add the number of visited nodes for this solution to the list
-                break; // skip to the next iteration of the loop
+	        	if (isGoal(node)) {
+	        		return state; // skip to the next iteration of the loop
+	        	}
+	            
 	        }
 	        
 	        int row = state.length; // determine the current row being filled
 	        for (int col = 0; col < n; col++) { // try all possible columns in the current row
-	            boolean safe = true; // assume the placement is safe until proven otherwise
-	            for (int i = 0; i < row; i++) { // check all previous rows for conflicts
-	                if (col == state[i] || col-row == state[i]-i || col+row == state[i]+i) {
-	                    // if there's a conflict with a previous queen placement
-	                    safe = false; // mark the placement as unsafe
-	                    break; // stop checking for conflicts
-	                }
-	            }
-	            if (safe) { // if the placement is safe
+	            
+	            //if (safe) { // if the placement is safe
 	                int[] childState = Arrays.copyOf(state, row+1); // create a new child state with one more queen placed
 	                childState[row] = col; // place the new queen in the current row and column
-	                String stateString = Arrays.toString(childState); // convert the state to a string for hashing
-	                if (!visited.contains(stateString)) { // if the state has not been visited before
-	                    queue.offer(new Node(childState, node.getCost()+1, node)); // add it to the queue of nodes to explore
+	                //String stateString = Arrays.toString(childState); // convert the state to a string for hashing
+	                if (!visited.contains(childState)) { // if the state has not been visited before
+	                    queue.offer(new Node(childState, node.getCost()+1)); // add it to the queue of nodes to explore
 	                    totalNodes++; // increment the total nodes counter
-	                    visited.add(stateString); // mark it as visited
-	                }
+	                    visited.add(childState); // mark it as visited
+	                
 	            }
 	        }
 	    }
 	    
-	    return solutions; // return the list of solutions
+	    return null; // return the list of solutions
 	}
+	
+	// Method to check if a node is the goal state
+    private static boolean isGoal(Node node) {
+        int[] state = node.getState();
+        for (int i = 0; i < state.length; i++) {
+            for (int j = i + 1; j < state.length; j++) {
+                // Check if two queens are in the same column or diagonal
+                if (state[i] == state[j] || Math.abs(state[i] - state[j]) == Math.abs(i - j)) {
+                    return false; // If any two queens are attacking each other, return false
+                }
+            }
+        }
+        return true; // If no two queens are attacking each other, return true
+    }
 	
     // This method prints a chessboard representation of a given state
     public static void printBoard(int[] state) {
@@ -70,13 +74,7 @@ public class BFS {
         }
     }
     
-    public static List<Integer> getTotalNodesSolution() {
-		return totalNodesSolution;
-	}
 
-	public static List<Integer> getVisitedNodesSolution() {
-		return visitedNodesSolution;
-	}
 
 	public static int getTotalNodes() {
 		return totalNodes;

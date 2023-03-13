@@ -15,16 +15,13 @@ public class AStar {
     
     private int totalNodes; // to keep track of the total number of nodes
 	private int visitedNodes; // to keep track of the number of visited nodes
-	private List<Integer> totalNodesSolution = new ArrayList<>(); // to keep track of the number of nodes generated for each solution
-	private List<Integer> visitedNodesSolution = new ArrayList<>(); // to keep track of the number of visited nodes for each solution
-
+	
     public AStar(int N) {
         this.N = N;
     }
 
-    public List<int[]> findSolution(int[] startState) {
+    public int[] findSolution(int[] startState) {
     	
-    	List<int[]> solutions = new ArrayList<>(); // To store all the possible solutions
     	Set<String> visited = new HashSet<>(); // initialize a set to keep track of visited states
         PriorityQueue<HeuristicNode> pq = new PriorityQueue<>(Comparator.comparingInt(HeuristicNode::getF)); // Priority Queue to keep track of nodes with minimum cost
 
@@ -39,10 +36,7 @@ public class AStar {
         	visitedNodes++; // Incrementing the visited nodes counter
 
             if (isGoal(node)) { // If the current node is the goal state
-            	solutions.add(node.getState()); // Add the current node's state to the solutions list
-            	totalNodesSolution.add(totalNodes); // Add the total number of nodes generated for this solution to the list
-            	visitedNodesSolution.add(visitedNodes); // Add the number of visited nodes for this solution to the list
-            	break;
+            	return node.getState();
             }
 
             for (HeuristicNode neighbor : getNeighbors(node)) { // Looping through all the neighbors of the current node
@@ -56,7 +50,7 @@ public class AStar {
             }
         }
 
-        return solutions; // Return all possible solutions
+        return null; // Return all possible solutions
     }
 
  // Method to check if a node is the goal state
@@ -153,23 +147,6 @@ public class AStar {
 		this.visitedNodes = visitedNodes;
 	}
 
-	public List<Integer> getTotalNodesSolution() {
-		return totalNodesSolution;
-	}
-
-	public void setTotalNodesSolution(List<Integer> totalNodesSolution) {
-		this.totalNodesSolution = totalNodesSolution;
-	}
-
-	public List<Integer> getVisitedNodesSolution() {
-		return visitedNodesSolution;
-	}
-
-	public void setVisitedNodesSolution(List<Integer> visitedNodesSolution) {
-		this.visitedNodesSolution = visitedNodesSolution;
-	}
-
-	
 	
     
     
