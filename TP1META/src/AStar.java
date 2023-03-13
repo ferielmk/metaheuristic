@@ -22,13 +22,12 @@ public class AStar {
 
     public int[] findSolution(int[] startState) {
     	
-    	Set<String> visited = new HashSet<>(); // initialize a set to keep track of visited states
+    	Set<int[]> visited = new HashSet<>(); // initialize a set to keep track of visited states
         PriorityQueue<HeuristicNode> pq = new PriorityQueue<>(Comparator.comparingInt(HeuristicNode::getF)); // Priority Queue to keep track of nodes with minimum cost
 
         
-        pq.offer(new HeuristicNode(startState, 0, calculateH(startState), null)); // Adding the start node to the priority queue
-        String stateString = Arrays.toString(startState); // Get the string representation of the current node's state
-        visited.add(stateString); // Adding the current node to the visited set
+        pq.offer(new HeuristicNode(startState, 0, calculateH(startState))); // Adding the start node to the priority queue
+        visited.add(startState); // Adding the current node to the visited set
         totalNodes++; // Incrementing the total nodes counter for the start node
         
         while (!pq.isEmpty()) { // Looping till all nodes are explored or a solution is found
@@ -40,17 +39,16 @@ public class AStar {
             }
 
             for (HeuristicNode neighbor : getNeighbors(node)) { // Looping through all the neighbors of the current node
-            	String neighborString = Arrays.toString(neighbor.getState()); // Get the string representation of the neighbor's state
-                if (!visited.contains(neighborString)) { // If the neighbor is not visited yet
+                if (!visited.contains(neighbor.getState())) { // If the neighbor is not visited yet
                     pq.offer(neighbor); // Add the neighbor to the priority queue
                     totalNodes++; // Increment the total nodes counter
-                    visited.add(neighborString); // Adding the current node to the visited set
+                    visited.add(neighbor.getState()); // Adding the current node to the visited set
                     
                 }
             }
         }
 
-        return null; // Return all possible solutions
+        return null; 
     }
 
  // Method to check if a node is the goal state
@@ -90,7 +88,7 @@ public class AStar {
 	                    int[] newState = Arrays.copyOf(state, N);
 	                    newState[row] = col;
 	                    int h = calculateH(newState);
-	                    HeuristicNode neighbor = new HeuristicNode(newState, g + 1, h, node);
+	                    HeuristicNode neighbor = new HeuristicNode(newState, g + 1, h);
 	                    neighbors.add(neighbor);
 	                }
 	            }
