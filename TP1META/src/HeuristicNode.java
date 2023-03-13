@@ -4,13 +4,11 @@ public class HeuristicNode implements Comparable<HeuristicNode> {
     private int[] state;
     private int g;
     private int h;
-    private HeuristicNode parent;
 
-    public HeuristicNode(int[] state, int g, int h, HeuristicNode parent) {
+    public HeuristicNode(int[] state, int g, int h) {
         this.state = state;
         this.g = g;
         this.h = h;
-        this.parent = parent;
     }
 
     public int[] getState() {
@@ -25,9 +23,6 @@ public class HeuristicNode implements Comparable<HeuristicNode> {
         return h;
     }
 
-    public HeuristicNode getParent() {
-        return parent;
-    }
 
     public int getF() {
         return g + h;
