@@ -12,7 +12,7 @@
  public class Main {
   public static void main(String[] args) {
     System.out.println("BFS in main . . .");
-      int n = 7;
+      int n = 4;
       
       long startTime_bfs = System.nanoTime();
         int[] solutions_bfs = BFS.solveNQueensBFS(n);
