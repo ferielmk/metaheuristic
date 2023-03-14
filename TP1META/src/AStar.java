@@ -34,39 +34,41 @@ public class AStar {
         	HeuristicNode node = pq.poll(); // Removing the node with minimum cost from the priority queue
         	visitedNodes++; // Incrementing the visited nodes counter
 
-            if (isGoal(node)) { // If the current node is the goal state
+            if (isGoal(node)==0) { // If the current node is the goal state
             	return node.getState();
             }
-
-            for (HeuristicNode neighbor : getNeighbors(node)) { // Looping through all the neighbors of the current node
-                if (!visited.contains(neighbor.getState())) { // If the neighbor is not visited yet
-                    pq.offer(neighbor); // Add the neighbor to the priority queue
-                    totalNodes++; // Increment the total nodes counter
-                    visited.add(neighbor.getState()); // Adding the current node to the visited set
-                    
-                }
+            	for (HeuristicNode successor : getSuccessors(node)) { // Looping through all the neighbors of the current node
+	                if (!visited.contains(successor.getState())) { // If the neighbor is not visited yet
+	                    pq.offer(successor); // Add the neighbor to the priority queue
+	                    totalNodes++; // Increment the total nodes counter
+	                    visited.add(successor.getState()); // Adding the current node to the visited set
+	                    
+	                }
+            	}
             }
-        }
+            
+        
 
         return null; 
     }
 
  // Method to check if a node is the goal state
-    private boolean isGoal(HeuristicNode node) {
+    private static int isGoal(HeuristicNode node) {
         int[] state = node.getState();
+        int atkCount = 0;
         for (int i = 0; i < state.length; i++) {
             for (int j = i + 1; j < state.length; j++) {
                 // Check if two queens are in the same column or diagonal
                 if (state[i] == state[j] || Math.abs(state[i] - state[j]) == Math.abs(i - j)) {
-                    return false; // If any two queens are attacking each other, return false
+                    atkCount++; // If any two queens are attacking each other, return false
                 }
             }
         }
-        return true; // If no two queens are attacking each other, return true
+        return atkCount; // If no two queens are attacking each other, return true
     }
 
     // This method returns a list of all the neighboring states for a given state
-    private List<HeuristicNode> getNeighbors(HeuristicNode node) {
+    private List<HeuristicNode> getSuccessors(HeuristicNode node) {
 	    List<HeuristicNode> neighbors = new ArrayList<>();
 	    int[] state = node.getState(); // Get the current state of the node
 	    int g = node.getG(); // Get the current cost of reaching this node (number of moves made so far)
