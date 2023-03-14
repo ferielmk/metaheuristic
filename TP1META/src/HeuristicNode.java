@@ -1,17 +1,17 @@
 import java.util.Arrays;
 
 public class HeuristicNode implements Comparable<HeuristicNode> {
-    private int[] state;
+    private Integer[] state;
     private int g;
     private int h;
 
-    public HeuristicNode(int[] state, int g, int h) {
+    public HeuristicNode(Integer[] state, int g, int h) {
         this.state = state;
         this.g = g;
         this.h = h;
     }
 
-    public int[] getState() {
+    public Integer[] getState() {
         return state;
     }
 
