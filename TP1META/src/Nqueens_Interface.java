@@ -85,21 +85,28 @@ public class Nqueens_Interface {
     	            	// if there's a queen in this row and column
     	            	// print a queen symbol
     	                if (solutions_bfs[row] == col) {
-    	                	
-    	                	if ((row + col) % 2 == 0) {
-   	                         square.setBackground(Color.WHITE);
-   	                      // Load the queen image from a file
-   	                      ImageIcon queenIcon = new ImageIcon("white_queen.png");
-   	                      // Set the queen image as the icon for the label
-   	                      square.setIcon(queenIcon);
-   	                     } else {
-   	                         square.setBackground(Color.BLACK);
-   	                      // Load the queen image from a file
-   	                      ImageIcon queenIcon = new ImageIcon("black_queen.png");
-   	                      // Set the queen image as the icon for the label
-   	                      square.setIcon(queenIcon);
-   	                     } 
-    	                //else if there is not , print white or black squarre  
+    	                	 if ((row + col) % 2 == 0) {
+    	                	        square.setBackground(Color.WHITE);
+    	                	        ImageIcon queenIcon = new ImageIcon("black_queen.png");
+    	                	        // Set the preferred size of the label to match the size of the square
+    	                	        square.setPreferredSize(new Dimension(80,80));
+    	                	        // Scale the icon to fit within the preferred size of the label
+    	                	        queenIcon = new ImageIcon(queenIcon.getImage().getScaledInstance(square.getPreferredSize().width, square.getPreferredSize().height, Image.SCALE_SMOOTH));
+    	                	        // Set the queen image as the icon for the label
+    	                	        square.setIcon(queenIcon);
+    	                	    } else {
+    	                	    	square.setBackground(Color.BLACK);
+    	                	        ImageIcon queenIcon = new ImageIcon("white_queen.png");
+    	                	        // Set the preferred size of the label to match the size of the square
+    	                	        square.setPreferredSize(new Dimension(80, 80));
+    	                	        // Scale the icon to fit within the preferred size of the label
+    	                	        queenIcon = new ImageIcon(queenIcon.getImage().getScaledInstance(square.getPreferredSize().width, square.getPreferredSize().height, Image.SCALE_SMOOTH));
+    	                	        // Set the queen image as the icon for the label
+    	                	        square.setIcon(queenIcon);
+    	                	    }
+    	                     // Set the horizontal and vertical alignment of the label to center the queen image
+    	                     square.setHorizontalAlignment(JLabel.CENTER);
+    	                     square.setVerticalAlignment(JLabel.CENTER);
     	                } else {
     	                	 if ((row + col) % 2 == 0) {
     	                         square.setBackground(Color.WHITE);
