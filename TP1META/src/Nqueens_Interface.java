@@ -82,8 +82,24 @@ public class Nqueens_Interface {
     	            for (int col = 0; col < n; col++) { // iterate over all columns
     	            	JLabel square = new JLabel();
     	            	square.setOpaque(true);
-    	                if (solutions_bfs[row] == col) { // if there's a queen in this row and column
-    	                    System.out.print("Q "); // print a queen symbol
+    	            	// if there's a queen in this row and column
+    	            	// print a queen symbol
+    	                if (solutions_bfs[row] == col) {
+    	                	
+    	                	if ((row + col) % 2 == 0) {
+   	                         square.setBackground(Color.WHITE);
+   	                      // Load the queen image from a file
+   	                      ImageIcon queenIcon = new ImageIcon("white_queen.png");
+   	                      // Set the queen image as the icon for the label
+   	                      square.setIcon(queenIcon);
+   	                     } else {
+   	                         square.setBackground(Color.BLACK);
+   	                      // Load the queen image from a file
+   	                      ImageIcon queenIcon = new ImageIcon("black_queen.png");
+   	                      // Set the queen image as the icon for the label
+   	                      square.setIcon(queenIcon);
+   	                     } 
+    	                //else if there is not , print white or black squarre  
     	                } else {
     	                	 if ((row + col) % 2 == 0) {
     	                         square.setBackground(Color.WHITE);
