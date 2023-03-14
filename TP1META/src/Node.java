@@ -1,13 +1,13 @@
 public class Node {
-    private int[] state;
+    private Integer[] state;
     private int cost;
 
-    public Node(int[] state, int cost) {
+    public Node(Integer[] state, int cost) {
         this.state = state;
         this.cost = cost;
     }
 
-    public int[] getState() {
+    public Integer[] getState() {
         return state;
     }
 

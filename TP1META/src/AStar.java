@@ -20,9 +20,9 @@ public class AStar {
         this.N = N;
     }
 
-    public int[] findSolution(int[] startState) {
+    public Integer[] findSolution(Integer[] startState) {
     	
-    	Set<int[]> visited = new HashSet<>(); // initialize a set to keep track of visited states
+    	Set<Integer[]> visited = new HashSet<>(); // initialize a set to keep track of visited states
         PriorityQueue<HeuristicNode> pq = new PriorityQueue<>(Comparator.comparingInt(HeuristicNode::getF)); // Priority Queue to keep track of nodes with minimum cost
 
         
@@ -34,41 +34,49 @@ public class AStar {
         	HeuristicNode node = pq.poll(); // Removing the node with minimum cost from the priority queue
         	visitedNodes++; // Incrementing the visited nodes counter
 
-            if (isGoal(node)) { // If the current node is the goal state
+            if (isGoal(node)==0) { // If the current node is the goal state
             	return node.getState();
             }
-
-            for (HeuristicNode neighbor : getNeighbors(node)) { // Looping through all the neighbors of the current node
-                if (!visited.contains(neighbor.getState())) { // If the neighbor is not visited yet
-                    pq.offer(neighbor); // Add the neighbor to the priority queue
-                    totalNodes++; // Increment the total nodes counter
-                    visited.add(neighbor.getState()); // Adding the current node to the visited set
-                    
-                }
+            	for (HeuristicNode successor : getSuccessors(node)) { // Looping through all the neighbors of the current node
+	                if (!visited.contains(successor.getState())) { // If the neighbor is not visited yet
+	                    pq.offer(successor); // Add the neighbor to the priority queue
+	                    totalNodes++; // Increment the total nodes counter
+	                    visited.add(successor.getState()); // Adding the current node to the visited set
+	                    
+	                }
+            	}
             }
-        }
+            
+        
 
         return null; 
     }
 
  // Method to check if a node is the goal state
-    private boolean isGoal(HeuristicNode node) {
-        int[] state = node.getState();
+    private static int isGoal(HeuristicNode node) {
+    	Integer[] state = node.getState();
+        int atkCount = 0;
         for (int i = 0; i < state.length; i++) {
             for (int j = i + 1; j < state.length; j++) {
                 // Check if two queens are in the same column or diagonal
                 if (state[i] == state[j] || Math.abs(state[i] - state[j]) == Math.abs(i - j)) {
-                    return false; // If any two queens are attacking each other, return false
+                    atkCount++; // If any two queens are attacking each other, return false
                 }
             }
         }
-        return true; // If no two queens are attacking each other, return true
+        return atkCount; // If no two queens are attacking each other, return true
     }
+    
+    /*
+     * The getSuccessors method is used to generate all possible successor states from a given state by moving a single queen to a different column in the same row. The hasAttackingQueen variable is used to check whether the current queen in the row variable is being attacked by any other queen in the current state.
+     * If the hasAttackingQueen variable is true, that means there is at least one other queen in the current state that is attacking the current queen. In this case, the method generates new states by moving the current queen to all other columns in the same row except for the current column. This ensures that the current queen is no longer attacked by any other queen in the state, and we have a valid new state.
+     * If the hasAttackingQueen variable is false, that means there are no other queens in the current state attacking the current queen, and we don't need to generate any new states by moving this queen to a different column.
+     */
 
     // This method returns a list of all the neighboring states for a given state
-    private List<HeuristicNode> getNeighbors(HeuristicNode node) {
+    private List<HeuristicNode> getSuccessors(HeuristicNode node) {
 	    List<HeuristicNode> neighbors = new ArrayList<>();
-	    int[] state = node.getState(); // Get the current state of the node
+	    Integer[] state = node.getState(); // Get the current state of the node
 	    int g = node.getG(); // Get the current cost of reaching this node (number of moves made so far)
 	    for (int row = 0; row < N; row++) {
 	        int currentCol = state[row];
@@ -85,7 +93,7 @@ public class AStar {
 	        if (hasAttackingQueen) {
 	            for (int col = 0; col < N; col++) {
 	                if (col != currentCol) {
-	                    int[] newState = Arrays.copyOf(state, N);
+	                	Integer[] newState = Arrays.copyOf(state, N);
 	                    newState[row] = col;
 	                    int h = calculateH(newState);
 	                    HeuristicNode neighbor = new HeuristicNode(newState, g + 1, h);
@@ -100,12 +108,12 @@ public class AStar {
     }
     
  // This method calculates the heuristic value of a given state
-    private int calculateH(int[] state) {
+    private int calculateH(Integer[] startState) {
         int h = 0;
         for (int row = 0; row < N; row++) {
             for (int col = row + 1; col < N; col++) {
                 // Check if there is a queen in the same column as the current queen
-            	 if (state[row] == state[col] || Math.abs(state[row] - state[col]) == Math.abs(row - col)) {
+            	 if (startState[row] == startState[col] || Math.abs(startState[row] - startState[col]) == Math.abs(row - col)) {
                     h++; // If there is, increment the heuristic value
                 }
             }
@@ -115,7 +123,7 @@ public class AStar {
 
     
  // This method prints a chessboard representation of a given state
-    public void printBoard(int[] state) {
+    public void printBoard(Integer[] state) {
         int n = state.length; // determine the size of the board
         for (int row = 0; row < n; row++) { // iterate over all rows
             for (int col = 0; col < n; col++) { // iterate over all columns

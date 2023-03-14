@@ -6,64 +6,119 @@ public class DFS {
 	private static int visitedNodes; // to keep track of the number of visited nodes
 	
 	// This method solves the n-queens problem using BFS and returns a list of solutions
-	public static int[] solveNQueensDFS(int n) {
-	    Stack<Node> stack = new Stack<>(); // initialize a stack to hold the nodes to be explored
-	    Set<int[]> visited = new HashSet<>(); // initialize a set to keep track of visited states
+	public static Integer[] solveNQueensDFS(int n) {
+	    Stack<Node> stack = new Stack<>();
+	    Set<Integer[]> visited = new HashSet<>();
 
-	    stack.push(new Node(new int[0], 0)); // add the initial empty state to the stack
-	    visited.add(new int[0]); // mark the initial state as visited
-	    totalNodes++; // increment the total nodes counter
+	    stack.push(new Node(new Integer[n], 0));
+	    visited.add(new Integer[n]);
+	    totalNodes++;
 
-	    while (!stack.isEmpty()) { // loop until the stack is empty
-	        Node node = stack.pop(); // remove the next node from the top of the stack
-	        int[] state = node.getState(); // get the state represented by the node
-	        visitedNodes++; // increment the visited nodes counter
+	    while (!stack.isEmpty()) {
+	        Node node = stack.pop();
+	        Integer[] state = node.getState();
+	        visitedNodes++;
 
-	        if (state.length == n) { // if the state is a complete solution
-	        	if (isGoal(node)) {
-	        		return state;
-	        	}
+	        if (isGoal(node) == 0) {
+	            return state; // found a valid solution, return it
 	        }
 
-	        int row = state.length; // determine the current row being filled
-	        if (row < n) {
-	        for (int col = 0; col < n; col++) { // try all possible columns in the current row
-	            int[] childState = Arrays.copyOf(state, row+1); // create a new child state with one more queen placed
-	            childState[row] = col; // place the new queen in the current row and column
-	            //String stateString = Arrays.toString(childState); // convert the state to a string for hashing
-	            if (!visited.contains(childState)) { // if the state has not been visited before
-	                Node childNode = new Node(childState, node.getCost()+1);
-	                stack.push(childNode); // add it to the stack of nodes to explore
-	                totalNodes++; // increment the total nodes counter
-	                visited.add(childState); // mark it as visited
+	        if (evaluate(node) == 0) {
+	        // get the successors
+	        for (Node successor : getSuccessors(node, n)) {
+	            if (!visited.contains(successor.getState())) {
+	                stack.push(successor);
+	                totalNodes++;
+	                visited.add(successor.getState());
 	            }
+	        
 	        }
 	    }
 	    }
 
-	    return null; // return the list of solutions
+	    return null; // no valid solution found, return null
 	}
-	
-	// Method to check if a node is the goal state
-    private static boolean isGoal(Node node) {
-        int[] state = node.getState();
-        for (int i = 0; i < state.length; i++) {
-            for (int j = i + 1; j < state.length; j++) {
-                // Check if two queens are in the same column or diagonal
-                if (state[i] == state[j] || Math.abs(state[i] - state[j]) == Math.abs(i - j)) {
-                    return false; // If any two queens are attacking each other, return false
-                }
-            }
-        }
-        return true; // If no two queens are attacking each other, return true
-    }
+
+	public static List<Node> getSuccessors(Node node, int n) {
+	    List<Node> successors = new ArrayList<>();
+	    Integer[] state = node.getState();
+
+	    for (int i = 0; i < n; i++) {
+	    	Integer[] nextState = state.clone();
+	        if(node.getCost()<n) {
+	        	nextState[node.getCost()] = i; // place a queen in the ith column of the next row
+	        Node nextNode = new Node(nextState, node.getCost() + 1);
+	        successors.add(nextNode);
+	        }
+	        
+	    }
+
+	    return successors;
+	}
+
+	public static int isGoal(Node node) {
+	    Integer[] state = node.getState();
+	    int n = state.length;
+	    int atkCount = 0;
+
+	    for (int i = 0; i < n; i++) {
+	        if (state[i] == null) {
+	        	atkCount++; // a row is not filled completely, invalid state
+	        }else {
+	        	for (int j = i + 1; j < n; j++) {
+		        	if (state[j] == null) {
+		        		atkCount++; // a row is not filled completely, invalid state
+			        }else {
+			        	if (state[i].intValue() == state[j].intValue() || Math.abs(state[i].intValue() - state[j].intValue()) == j - i) {
+		                // Two queens are attacking each other in the same row, column or diagonal
+		                atkCount++;
+		            }
+			        }
+		            
+		        }
+	        }
+	        
+	    }
+
+	    // All queens are placed without attacking each other, goal state found
+	    return atkCount;
+	}
+	public static int evaluate(Node node) {
+	    Integer[] state = node.getState();
+	    int n = state.length;
+	    int atkCount = 0;
+
+	    for (int i = 0; i < n; i++) {
+	        if (state[i] == null) {
+	            continue; // a row is not filled completely, invalid state
+	        }else {
+	        	for (int j = i + 1; j < n; j++) {
+		        	if (state[j] == null) {
+			            continue; // a row is not filled completely, invalid state
+			        }else {
+			        	if (state[i].intValue() == state[j].intValue() || Math.abs(state[i].intValue() - state[j].intValue()) == j - i) {
+		                // Two queens are attacking each other in the same row, column or diagonal
+			        		atkCount++;
+		            }
+			        }
+		            
+		        }
+	        }
+	        
+	    }
+
+	    // All queens are placed without attacking each other, goal state found
+	    return atkCount;
+	}
+
+
 	
     // This method prints a chessboard representation of a given state
-    public static void printBoard(int[] state) {
-        int n = state.length; // determine the size of the board
+    public static void printBoard(Integer[] solutions_dfs) {
+        int n = solutions_dfs.length; // determine the size of the board
         for (int row = 0; row < n; row++) { // iterate over all rows
             for (int col = 0; col < n; col++) { // iterate over all columns
-                if (state[row] == col) { // if there's a queen in this row and column
+                if (solutions_dfs[row] == col) { // if there's a queen in this row and column
                     System.out.print("Q "); // print a queen symbol
                 } else {
                     System.out.print(". "); // otherwise, print an empty space
