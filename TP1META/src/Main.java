@@ -8,6 +8,23 @@ import java.util.Arrays;
  * and the value of that index corresponds to the column where a queen is placed in that row.
  */
 
+<<<<<<< HEAD
+ public class Main {
+  public static void main(String[] args) {
+    System.out.println("BFS in main . . .");
+      int n = 4;
+      
+      long startTime_bfs = System.nanoTime();
+        int[] solutions_bfs = BFS.solveNQueensBFS(n);
+      long endTime_bfs = System.nanoTime();
+      // Calculate the elapsed time
+      long elapsedTime_bfs = endTime_bfs - startTime_bfs;
+      // Print the elapsed time in milliseconds
+      System.out.println("Elapsed time: " + (elapsedTime_bfs / 1000000) + " ms");
+      
+      int totalNodesSolution_bfs = BFS.getTotalNodes();
+    int visitedNodesSolution_bfs = BFS.getVisitedNodes();
+=======
 public class Main {
     public static void main(String[] args) {
     	System.out.println("BFS in main . . .");
@@ -23,6 +40,7 @@ public class Main {
         
         int totalNodesSolution_bfs = BFS.getTotalNodes();
     	int visitedNodesSolution_bfs = BFS.getVisitedNodes();
+>>>>>>> 1b797148f24f276065d3344be6a9bf1330d3a938
 
         
       //for interface
