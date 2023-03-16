@@ -52,7 +52,7 @@ public class DFS {
 	        }
 	        
 	    }
-
+	    Collections.reverse(successors);
 	    return successors;
 	}
 

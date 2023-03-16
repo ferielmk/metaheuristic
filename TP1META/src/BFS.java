@@ -49,7 +49,7 @@ public class BFS {
 
 	    for (int i = 0; i < n; i++) {
 	    	Integer[] nextState = state.clone();
-	        	nextState[node.getCost()] = i; // place a queen in the ith column of the next row
+	        nextState[node.getCost()] = i; // place a queen in the ith column of the next row
 	        Node nextNode = new Node(nextState, node.getCost() + 1);
 	        successors.add(nextNode);
 	        

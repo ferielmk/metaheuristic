@@ -1,0 +1,23 @@
+1/ Description du projet et description de ce qui sera fait dans le rapport
+2/ Definitions (généralités) + pseudocode(en général) + complexité
+	donner l'essentiel, pas long, donner les references
+3/ Le probleme des nreine(en general) en Algorithmique
+	1 Description + figure d'un chessboard remplit
+	2 Nos structures pour modeliser le problème + modélisation de la solution (déclarations algorithmiques)
+	donner un exemple de modelistaion pour un n choisi
+	3 fonction d'evaluation: evalue s'il y a des reines en atk (decrire la fonction + pseudocode)
+4/ JAVA
+	1 pseudo codes (4 methodes + fct d'évaluation) avec structures de données en déclaration JAVA 
+	2 description des classes (entrées, sortie, implementation . . .)
+5/ 
+	1 environnement
+	2 presentation interface + screenshots des methodes
+	3 quatre tableaux avec les parametres demandes (n, nbr de noeuds generes, temps, solution)
+	* analyse de A* doit comparer la performance des deux heuristiques (quelle est la meilleure?)
+	4 etude comparative pour chaque parametre:
+		- tableau comparant les solutions à differentes tailles de n pour chaque methode (n, DFS, BFS, A1, A2)
+		- graphe pour le temps, nbr de noeuds generes, nbr de noeuds explores
+
+6/ Conclusion
+	conclure sur les differents algos en les comparant
+	ajouter des perspectives sur les metaheuristiques (prochaine partie du projet)
