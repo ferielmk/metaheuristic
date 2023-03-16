@@ -167,7 +167,7 @@ public class Nqueens_Interface {
     }
    
     private void createChessBoard() {
-    	int[] solutions_bfs = BFS.solveNQueensBFS(n);
+    	Integer[] solutions_bfs = BFS.solveNQueensBFS(n);
     	 int n = solutions_bfs.length; // determine the size of the board
     	        for (int row = 0; row < n; row++) { // iterate over all rows
     	            for (int col = 0; col < n; col++) { // iterate over all columns
