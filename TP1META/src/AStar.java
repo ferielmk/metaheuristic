@@ -103,7 +103,7 @@ public class AStar {
 	        }
 	    }
 
-        Collections.shuffle(neighbors);
+        //Collections.shuffle(neighbors);
         return neighbors;
     }
     
